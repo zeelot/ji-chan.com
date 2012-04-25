@@ -110,10 +110,10 @@ window.App = {
 			 *
 			 * @type {Lib.BoardSpawnZonesCollection}
 			 */
-			this.LevelSpawnZonesCollection = new Lib.BoardSpawnZonesCollection([{}, {}, {}, {}, {}]);
+			this.LevelSpawnZonesCollection = new Lib.BoardSpawnZonesCollection([{}, {}, {}]);
 
 			// We do the same thing for the Drop Zones Collection
-			this.LevelDropZonesCollection = new Lib.BoardDropZonesCollection([{}, {}, {}, {}, {}]);
+			this.LevelDropZonesCollection = new Lib.BoardDropZonesCollection([{}, {}, {}]);
 
 			// Let's create out Board View and pass it our Collections
 			this.BoardView = new Lib.BoardView({
