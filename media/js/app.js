@@ -71,14 +71,32 @@ window.App = {
 
 	Lib.BoardLevel1View = Backbone.View.extend({
 		'el': 'body',
+		/**
+		 * This is the Collection with all the Character Models needed in the
+		 * Level. Eventually I will place the Characters in a dictionary of
+		 * some sort and will simply populate this Collection from there.
+		 */
 		'LevelCharactersCollection': null,
+		/**
+		 * This is the Collection of Spawn Zone Models. Every Spawn Zone has the
+		 * ability of being loaded with a Tile Model which can be dragged out.
+		 * Levels usually decide how many Spawn Zones to place in this
+		 * Collection before they are even populated with Tiles.
+		 */
 		'LevelSpawnZonesCollection': null,
+		/**
+		 * This Collection is similar to the Spawn Zones Collection, except
+		 * that it is loaded directly with the Character Model that the Drop
+		 * Zone should accept. A Drop Zone with no Character Model will simply
+		 * not accept anything being dropped on it.
+		 */
 		'LevelDropZonesCollection': null,
 		initialize: function () {
 			_.bindAll(this);
 
 			// First, we create the characters that will exist in this level
 			this.LevelCharactersCollection = new Lib.CharactersCollection([
+				// @TODO: Move these models to a Disctionary class
 				{
 					'english': 'a',
 					'hiragana': 'あ',
