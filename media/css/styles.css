@@ -1,0 +1,22 @@
+body {
+	text-align: center;
+}
+
+.board {
+	margin: 0px auto;
+	padding: 5px;
+	height: 500px;
+	width: 500px;
+	outline: 1px solid green;
+}
+
+ol {
+	list-style: none;
+}
+li {
+	height: 50px;
+	width: 50px;
+	margin: 5px;
+	line-height: 50px;
+	outline: 1px solid blue;
+}
