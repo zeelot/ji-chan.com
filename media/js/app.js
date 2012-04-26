@@ -6,8 +6,18 @@ window.App = {
 	 * Contains all our class definitions
 	 */
 	'Lib': {},
+	/**
+	 * Contains the templates for the app
+	 */
 	'Templates': {},
-	'Router': null
+	/**
+	 * Contains the main Router instance
+	 */
+	'Router': null,
+	/**
+	 * Contains the User Model for the user on the page
+	 */
+	'User': null
 };
 
 /**
@@ -480,6 +490,14 @@ window.App = {
 		}
 	});
 
+	Lib.User = Backbone.Model.extend({
+		'defaults': {
+			'name': null,
+			'email': null,
+			'score': 0,
+		}
+	});
+
 }(window.App, window.App.Lib, window.App.Templates));
 
 jQuery(document).ready(function($) {
@@ -487,6 +505,10 @@ jQuery(document).ready(function($) {
 	$('script.template').each(function () {
 		window.App.Templates[$(this).data('path')] = $(this).html();
 	});
+
+	// Initialize our user
+	// @TODO: Load returning users
+	window.App.User = new window.App.Lib.User;
 
 	// Initialize our Router and start the app
 	window.App.Router = new window.App.Lib.AppRouter;
