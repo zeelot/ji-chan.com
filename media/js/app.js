@@ -101,7 +101,7 @@ window.App = {
 		 * not accept anything being dropped on it.
 		 */
 		'LevelDropZonesCollection': null,
-		initialize: function () {
+		'initialize': function () {
 			_.bindAll(this);
 
 			// First, we create the characters that will exist in this level
@@ -138,10 +138,10 @@ window.App = {
 			 *
 			 * @type {Lib.BoardSpawnZonesCollection}
 			 */
-			this.LevelSpawnZonesCollection = new Lib.BoardSpawnZonesCollection([{}, {}, {}]);
+			this.LevelSpawnZonesCollection = new Lib.BoardSpawnZonesCollection([{}, {}, {}, {}, {}]);
 
 			// We do the same thing for the Drop Zones Collection
-			this.LevelDropZonesCollection = new Lib.BoardDropZonesCollection([{}, {}, {}]);
+			this.LevelDropZonesCollection = new Lib.BoardDropZonesCollection([{}, {}, {}, {}, {}]);
 
 			// Let's create out Board View and pass it our Collections
 			this.BoardView = new Lib.BoardView({
@@ -151,53 +151,57 @@ window.App = {
 				'LevelDropZonesCollection': this.LevelDropZonesCollection
 			});
 
+			this.LevelDropZonesCollection.bind('dropped:valid', this.validDrop);
+			this.LevelDropZonesCollection.bind('dropped:invalid', this.invalidDrop);
+
 			this.start();
+		},
+		'validDrop': function (event) {
+			// @TODO: Some score keeping
+			var TileID = event.originalEvent.dataTransfer.getData('TileID');
+			this.LevelSpawnZonesCollection.any(function (SpawnZone) {
+				if (SpawnZone.get('tile').cid === TileID) {
+					SpawnZone.set({
+						'enabled': false
+					});
+					return true; // Stops the loop
+				}
+			});
+		},
+		'invalidDrop': function (event) {
+			// @TODO: Some score keeping
 		},
 		/**
 		 * Sets up all the various timers for everything like creating Tiles or
 		 * ending the game. This will probably be abstracted into a Model later.
 		 */
-		start: function () {
-			setInterval(this.addRandomTile, 1000);
-			setInterval(this.addRandomDropZoneCharacter, 1000);
+		'start': function () {
+			this.populateZones();
 		},
-		addRandomTile: function () {
-			var Tile = new Lib.BoardTileModel({
-				'character': this.LevelCharactersCollection.getRandomModel()
-			});
+		'populateZones': function () {
+			var length = this.LevelSpawnZonesCollection.length,
+				Tile,
+				Character,
+				EmptySpawnZone,
+				EmptyDropZone,
+				i;
 
-			// Place the new Tile onto a random Spawn Zone (Must be empty)
-			var EmptyZoneModel = this.LevelSpawnZonesCollection.getRandomEmptyModel();
-
-			if (EmptyZoneModel) {
-				EmptyZoneModel.set({
-					'tile': Tile
-				});
-
-				setTimeout(function () {
-					EmptyZoneModel.set({
-						'tile': null
-					});
-				}, Math.floor(Math.random()*10000));
-			}
-		},
-		addRandomDropZoneCharacter: function () {
-			var Character = this.LevelCharactersCollection.getRandomModel();
-
-			// Place the new Character into a random Drop Zone (Must be empty)
-			var EmptyZoneModel = this.LevelDropZonesCollection.getRandomEmptyModel();
-
-			if (EmptyZoneModel) {
-				EmptyZoneModel.set({
+			for (i = 0; i < length; i++) {
+				Character = this.LevelCharactersCollection.at(i);
+				Tile = new Lib.BoardTileModel({
 					'character': Character
 				});
 
-				setTimeout(function () {
-					EmptyZoneModel.set({
-						'character': null
-					});
-				}, Math.floor(Math.random()*10000));
-			}
+				EmptySpawnZone = this.LevelSpawnZonesCollection.getRandomEmptyModel();
+				EmptyDropZone = this.LevelDropZonesCollection.getRandomEmptyModel();
+
+				EmptySpawnZone.set({
+					'tile': Tile
+				});
+				EmptyDropZone.set({
+					'character': Character
+				});
+			};
 		}
 	});
 
@@ -267,9 +271,8 @@ window.App = {
 	});
 
 	Lib.BoardDropZoneView = Backbone.View.extend({
-		'template': null,
 		'tagName': 'li',
-		'className': 'board-drop-zone',
+		'className': 'drop-zone',
 		'BoardDropZoneModel': null,
 		'BoardView': null,
 		'events': {
@@ -279,7 +282,6 @@ window.App = {
 			'drop': 'dropped'
 		},
 		'initialize': function () {
-			this.template = Hogan.compile(Templates["widgets/board/drop-zone"]);
 			this.BoardDropZoneModel = this.options.model;
 			this.BoardView = this.options.BoardView;
 
@@ -290,19 +292,15 @@ window.App = {
 		},
 		'render': function () {
 			if (this.BoardDropZoneModel.get('character') === null) {
-				this.$el.html('');
+				this.$el.html('&nbsp;');
 			} else {
-				this.$el.html(this.template.render(this.templateData()));
+				var characterView = new Lib.CharacterView({
+					'CharacterModel': this.BoardDropZoneModel.get('character'),
+					'display': 'english'
+				});
+
+				this.$el.html(characterView.$el);
 			}
-		},
-		'templateData': function () {
-			return {
-				'english': this.BoardDropZoneModel.get('character').get('english'),
-				'hiragana': this.BoardDropZoneModel.get('character').get('hiragana'),
-				'katakana': this.BoardDropZoneModel.get('character').get('katakana'),
-				'romaji': this.BoardDropZoneModel.get('character').get('romaji'),
-				'kanji': this.BoardDropZoneModel.get('character').get('kanji')
-			};
 		},
 		'draggedOver': function (event) {
 			event.preventDefault();
@@ -315,9 +313,9 @@ window.App = {
 			var cid = event.originalEvent.dataTransfer.getData('CharacterID');
 
 			if (this.BoardDropZoneModel.get('character').cid === cid) {
-				alert('Correct!');
+				this.BoardDropZoneModel.trigger('dropped dropped:valid', event);
 			} else {
-				alert('Incorrect!');
+				this.BoardDropZoneModel.trigger('dropped dropped:invalid', event);
 			}
 		}
 	});
@@ -346,24 +344,36 @@ window.App = {
 
 	Lib.BoardSpawnZoneView = Backbone.View.extend({
 		'tagName': 'li',
-		'className': 'spawn-drop-zone',
+		'className': 'spawn-zone',
 		'BoardSpawnZoneModel': null,
+		'TileView': null,
 		'initialize': function () {
 			this.BoardSpawnZoneModel = this.options.model;
 
 			// Render this View every time the Model changes
 			this.BoardSpawnZoneModel.bind('change:tile', this.render, this);
+			this.BoardSpawnZoneModel.bind('change:enabled', this.changedEnabled, this);
 
 			this.render();
+		},
+		'changedEnabled': function () {
+			if (this.BoardSpawnZoneModel.get('enabled')) {
+				this.$el.removeClass('disabled');
+				this.TileView.enable();
+			} else {
+				this.$el.addClass('disabled');
+				this.TileView.disable();
+			}
 		},
 		'render': function () {
 			if (this.BoardSpawnZoneModel.get('tile') === null) {
 				this.$el.html('');
+				this.TileView = null;
 			} else {
-				var TileView = new Lib.BoardTileView({
+				this.TileView = new Lib.BoardTileView({
 					'TileModel': this.BoardSpawnZoneModel.get('tile')
 				});
-				this.$el.html(TileView.$el);
+				this.$el.html(this.TileView.$el);
 			}
 		}
 	});
@@ -373,31 +383,35 @@ window.App = {
 		'tagName': 'div',
 		'className': 'tile',
 		'attributes': {
-			'draggable': 'true'
+			'draggable': true
 		},
 		'TileModel': null,
 		'events': {
 			'dragstart': 'dragStart'
 		},
 		'initialize': function () {
-			this.template = Hogan.compile(Templates["widgets/board/tile"]);
+			_.bindAll(this);
+
 			this.TileModel = this.options.TileModel;
 			this.render();
 		},
 		'render': function () {
-			this.$el.html(this.template.render(this.templateData()));
-		},
-		'templateData': function () {
-			return {
-				'english': this.TileModel.get('character').get('english'),
-				'hiragana': this.TileModel.get('character').get('hiragana'),
-				'katakana': this.TileModel.get('character').get('katakana'),
-				'romaji': this.TileModel.get('character').get('romaji'),
-				'kanji': this.TileModel.get('character').get('kanji')
-			};
+			var characterView = new Lib.CharacterView({
+				'CharacterModel': this.TileModel.get('character'),
+				'display': 'hiragana'
+			});
+
+			this.$el.html(characterView.$el);
 		},
 		'dragStart': function (event) {
 			event.originalEvent.dataTransfer.setData('CharacterID', this.TileModel.get('character').cid);
+			event.originalEvent.dataTransfer.setData('TileID', this.TileModel.cid);
+		},
+		'enable': function () {
+			this.$el.attr('draggable', true);
+		},
+		'disable': function () {
+			this.$el.attr('draggable', false);
 		}
 	});
 
@@ -426,10 +440,8 @@ window.App = {
 	});
 	Lib.BoardSpawnZoneModel = Backbone.Model.extend({
 		'defaults': {
-			'tile': null
-		},
-		getCharacterHiragana: function () {
-			return (this.get('tile') === null) ? null : this.get('tile').get('character').get('hiragana');
+			'tile': null,
+			'enabled': true
 		}
 	});
 	Lib.BoardSpawnZonesCollection = Backbone.Collection.extend({
@@ -447,6 +459,22 @@ window.App = {
 
 			var randomIndex = Math.floor(Math.random()*filtered.length);
 			return filtered[randomIndex];
+		}
+	});
+	/**
+	 * Used everywhere a Character has to be displayed
+	 */
+	Lib.CharacterView = Backbone.View.extend({
+		'className': 'character',
+		'display': null,
+		'CharacterModel': null,
+		'initialize': function () {
+			this.CharacterModel = this.options.CharacterModel;
+			this.display = this.options.display || 'english';
+			this.render();
+		},
+		'render': function () {
+			this.$el.text(this.CharacterModel.get(this.display));
 		}
 	});
 
