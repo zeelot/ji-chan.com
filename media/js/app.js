@@ -156,13 +156,17 @@ window.App = {
 
 			this.start();
 		},
-		'validDrop': function (event) {
+		'validDrop': function (event, DropZoneModel) {
 			// @TODO: Some score keeping
 			var TileID = event.originalEvent.dataTransfer.getData('TileID');
 			this.LevelSpawnZonesCollection.any(function (SpawnZone) {
 				if (SpawnZone.get('tile').cid === TileID) {
 					SpawnZone.set({
 						'enabled': false
+					});
+
+					DropZoneModel.set({
+						'tile': SpawnZone.get('tile')
 					});
 					return true; // Stops the loop
 				}
@@ -287,6 +291,7 @@ window.App = {
 
 			// Render this View every time the Model changes
 			this.BoardDropZoneModel.bind('change:character', this.render, this);
+			this.BoardDropZoneModel.bind('change:tile', this.render, this);
 
 			this.render();
 		},
@@ -296,26 +301,41 @@ window.App = {
 			} else {
 				var characterView = new Lib.CharacterView({
 					'CharacterModel': this.BoardDropZoneModel.get('character'),
-					'display': 'english'
+					'display': this.BoardDropZoneModel.get('tile') ? 'hiragana' : 'english'
 				});
+
+				if (this.BoardDropZoneModel.get('tile')) {
+					// This Drop Zone has a tile
+					this.$el.addClass('has-tile');
+				} else {
+					this.$el.removeClass('has-tile');
+				}
 
 				this.$el.html(characterView.$el);
 			}
 		},
 		'draggedOver': function (event) {
-			event.preventDefault();
+			// We need to preventDefault() to allow dropping items on this Zone
+			if (this.BoardDropZoneModel.get('tile') === null) {
+				// Only allow dropping when there is no tile in here
+				event.preventDefault();
+			}
 		},
 		'dragEntered': function (event) {
-			event.preventDefault();
+			// We need to preventDefault() to allow dropping items on this Zone
+			if (this.BoardDropZoneModel.get('tile') === null) {
+				// Only allow dropping when there is no tile in here
+				event.preventDefault();
+			}
 		},
 		'dragLeft': function (event) {},
 		'dropped': function (event) {
 			var cid = event.originalEvent.dataTransfer.getData('CharacterID');
 
 			if (this.BoardDropZoneModel.get('character').cid === cid) {
-				this.BoardDropZoneModel.trigger('dropped dropped:valid', event);
+				this.BoardDropZoneModel.trigger('dropped dropped:valid', event, this.BoardDropZoneModel);
 			} else {
-				this.BoardDropZoneModel.trigger('dropped dropped:invalid', event);
+				this.BoardDropZoneModel.trigger('dropped dropped:invalid', event, this.BoardDropZoneModel);
 			}
 		}
 	});
@@ -418,7 +438,8 @@ window.App = {
 	Lib.BoardModel = Backbone.Model.extend({});
 	Lib.BoardDropZoneModel = Backbone.Model.extend({
 		'defaults': {
-			'character': null
+			'character': null,
+			'tile': null
 		}
 	});
 	Lib.BoardDropZonesCollection = Backbone.Collection.extend({

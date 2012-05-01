@@ -15,8 +15,6 @@ body {
 
 .board-container {
 	@include container;
-
-	outline: 1px solid green;
 }
 
 .board {
@@ -33,8 +31,6 @@ body {
 
 	position: absolute;
 	top: 0;
-
-	outline: 1px solid red;
 }
 
 .drop-zone {
@@ -45,12 +41,18 @@ body {
 
 	background: url("../images/game/drop-zone-deep.png") no-repeat;
 
-	outline: 1px solid blue;
-
 	> .character {
 		position: relative;
 		top: 25px;
 		left: 5px;
+	}
+}
+.drop-zone.has-tile {
+	background: url("../images/game/tile-down-1.png") no-repeat;
+	color: #FFF;
+	> .character {
+		top: 20px;
+		left: 3px;
 	}
 }
 
@@ -62,14 +64,10 @@ body {
 
 	position: absolute;
 	bottom: 0;
-
-	outline: 1px solid red;
 }
 
 .spawn-zone {
 	margin: 0px 5px;
-
-	outline: 1px solid blue;
 }
 
 .tile {
@@ -91,7 +89,7 @@ body {
 }
 
 .spawn-zone.disabled {
-	opacity: 0.5;
+	opacity: 0.2;
 }
 
 .drop-zone, .spawn-zone {
