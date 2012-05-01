@@ -20,7 +20,6 @@
 			</div>
 		</script>
 		<script type="text/template" class="template" data-path="page/play">
-			<h1>JPN 101 Game</h1>
 			<div class="board-container"></div>
 		</script>
 
