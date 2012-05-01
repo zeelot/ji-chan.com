@@ -1,0 +1,99 @@
+.l-grid {
+	list-style-type: none;
+}
+.l-grid-item {
+	display: inline-block;
+
+	/* IE7 hack to mimic inline-block on block elements */
+	*display: inline;
+	*zoom: 1;
+}
+
+body {
+	background: url("../images/game/wood-pattern.png");
+}
+
+.board-container {
+	@include container;
+
+	outline: 1px solid green;
+}
+
+.board {
+	position: relative;
+	height: 500px;
+}
+
+.drop-zones {
+	@include column(16, true);
+	@extend .l-grid;
+
+	text-align: center;
+
+	position: absolute;
+	top: 0;
+
+	outline: 1px solid red;
+}
+
+.drop-zone {
+	height: 64px;
+	width: 64px;
+
+	margin: 0px 5px;
+
+	background: url("../images/game/drop-zone-deep.png") no-repeat;
+
+	outline: 1px solid blue;
+
+	> .character {
+		position: relative;
+		top: 25px;
+		left: 5px;
+	}
+}
+
+.spawn-zones {
+	@include column(16, true);
+	@extend .l-grid;
+
+	text-align: center;
+
+	position: absolute;
+	bottom: 0;
+
+	outline: 1px solid red;
+}
+
+.spawn-zone {
+	margin: 0px 5px;
+
+	outline: 1px solid blue;
+}
+
+.tile {
+	height: 64px;
+	width: 64px;
+	text-align: center;
+
+	background: url("../images/game/tile-up-1.png");
+
+	position: relative;
+
+	> .character {
+		display: inline;
+		color: #FFF;
+		position: relative;
+		top: 15px;
+		right: 5px;
+	}
+}
+
+.drop-zone, .spawn-zone {
+	@extend .l-grid-item;
+}
+
+.character {
+	text-transform: uppercase;
+	font-size: 30px;
+}

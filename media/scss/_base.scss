@@ -1,0 +1,15 @@
+body, form, ul, ol, li {
+	margin: 0;
+	padding: 0;
+}
+
+p {
+	margin: 0 0 1em;
+
+	/* HYPHENATE ALL THE THINGS! */
+	-webkit-hyphens: auto;
+	-moz-hyphens: auto;
+	-o-hyphens: auto;
+	-ms-hyphens: auto;
+	hyphens: auto;
+}

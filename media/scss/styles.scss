@@ -1,0 +1,18 @@
+/**
+ * A lot of inspiration came from the SMACSS book: https://smacss.com
+ */
+@import "compass/reset";
+@import "blueprint/grid";
+@import "blueprint/debug";
+@import "compass/utilities";
+@import "compass/css3";
+
+$blueprint-grid-columns: 16;
+$blueprint-container-size: 940px;
+$blueprint-grid-margin: 20px;
+$blueprint-grid-width: ($blueprint-container-size + $blueprint-grid-margin) / $blueprint-grid-columns - $blueprint-grid-margin;
+$blueprint-grid-outer-width: $blueprint-grid-width + $blueprint-grid-margin;
+
+@import "classes";
+@import "base";
+@import "layout";
