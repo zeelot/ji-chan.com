@@ -30,13 +30,6 @@
 				<div class="spawn-zones"></div>
 			</div>
 		</script>
-
-		<script type="text/template" class="template" data-path="widgets/board/drop-zone">
-			{{english}}
-		</script>
-		<script type="text/template" class="template" data-path="widgets/board/tile">
-			{{hiragana}}
-		</script>
 	</head>
 	<body></body>
 </html>
