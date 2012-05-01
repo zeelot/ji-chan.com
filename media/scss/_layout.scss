@@ -20,6 +20,7 @@ body {
 }
 
 .board {
+	@include user-select(none);
 	position: relative;
 	height: 500px;
 }
@@ -87,6 +88,10 @@ body {
 		top: 15px;
 		right: 5px;
 	}
+}
+
+.spawn-zone.disabled {
+	opacity: 0.5;
 }
 
 .drop-zone, .spawn-zone {
