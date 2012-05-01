@@ -101,6 +101,7 @@ window.App = {
 		 * not accept anything being dropped on it.
 		 */
 		'LevelDropZonesCollection': null,
+		'progress': 0.0,
 		'initialize': function () {
 			_.bindAll(this);
 
@@ -157,8 +158,10 @@ window.App = {
 			this.start();
 		},
 		'validDrop': function (event, DropZoneModel) {
-			// @TODO: Some score keeping
 			var TileID = event.originalEvent.dataTransfer.getData('TileID');
+
+			this.progress += 1.0/this.LevelDropZonesCollection.length;
+
 			this.LevelSpawnZonesCollection.any(function (SpawnZone) {
 				if (SpawnZone.get('tile').cid === TileID) {
 					SpawnZone.set({
@@ -171,6 +174,10 @@ window.App = {
 					return true; // Stops the loop
 				}
 			});
+
+			if (this.progress === 1) {
+				alert('You win! Hold tight while we make some more levels.');
+			}
 		},
 		'invalidDrop': function (event) {
 			// @TODO: Some score keeping
