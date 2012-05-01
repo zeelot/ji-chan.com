@@ -568,5 +568,5 @@ jQuery(document).ready(function($) {
 
 	// Initialize our Router and start the app
 	window.App.Router = new window.App.Lib.AppRouter;
-	Backbone.history.start({pushState: true, root: '/jpn-games/'});
+	Backbone.history.start({pushState: true, root: '/'});
 });
