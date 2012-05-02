@@ -44,38 +44,47 @@ window.App = {
 		}
 	});
 
-	Lib.HomePageView = Backbone.View.extend({
+	Lib.PageView = Backbone.View.extend({
 		'el': 'body',
+		'templatePath': null,
 		'template': null,
-		'events': {
-			'click button': 'buttonClicked'
-		},
+		'layoutPath': 'layout/empty',
+		'layout': null,
 		'initialize': function () {
-			this.template = Hogan.compile(Templates["page/home"]);
+			if (this.layoutPath) {
+				this.layout = Hogan.compile(Templates[this.layoutPath]);
+			}
+			if (this.templatePath) {
+				this.template = Hogan.compile(Templates[this.templatePath]);
+			}
 
 			this.render();
 		},
-		'buttonClicked': function () {
-			App.Router.navigate('play', {trigger: true});
-		},
 		'render': function () {
-			this.$el.html(this.template.render());
+			if (this.layout) {
+				this.$el.html(this.layout.render(this.renderData, {
+					'content': this.template
+				}));
+			}
+		},
+		'renderData': function () {
+			// Replace this method to provide data when rendering
+			return {};
 		}
 	});
 
-	Lib.PlayPageView = Backbone.View.extend({
-		'el': 'body',
-		'template': null,
-		'BoardView': null,
+	Lib.HomePageView = Lib.PageView.extend({
+		'templatePath': 'page/home'
+	});
+
+	Lib.PlayPageView = Lib.PageView.extend({
+		'layoutPath': 'layout/game',
+		'templatePath': 'page/play',
 		'LevelView': null,
 		'initialize': function () {
-			this.template = Hogan.compile(Templates["page/play"]);
-
-			this.render();
+			// Calls the parent initialize function
+			Lib.PageView.prototype.initialize.call(this);
 			this.LevelView = new Lib.BoardLevel1View;
-		},
-		'render': function () {
-			this.$el.html(this.template.render());
 		}
 	});
 

@@ -16,10 +16,15 @@
 
 		<link type="text/css" rel="stylesheet" href="/media/css/styles.css">
 
+		<script type="text/template" class="template" data-path="layout/empty">
+			{{>content}}
+		</script>
+		<script type="text/template" class="template" data-path="layout/game">
+			{{>content}}
+		</script>
+
 		<script type="text/template" class="template" data-path="page/home">
-			<div class="board">
-				<button type="button">Start Playing!</button>
-			</div>
+			<a href="/play">Play</a>
 		</script>
 		<script type="text/template" class="template" data-path="page/play">
 			<div class="board-container"></div>
