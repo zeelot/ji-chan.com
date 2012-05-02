@@ -1,4 +1,5 @@
 body, form, ul, ol, li {
+	@extend .font-regular;
 	margin: 0;
 	padding: 0;
 }

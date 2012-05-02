@@ -1,0 +1,10 @@
+.l-grid {
+	list-style-type: none;
+}
+.l-grid-item {
+	display: inline-block;
+
+	/* IE7 hack to mimic inline-block on block elements */
+	*display: inline;
+	*zoom: 1;
+}
