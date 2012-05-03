@@ -1,11 +1,40 @@
 body, form, ul, ol, li {
 	@extend .font-regular;
+	font-size: 16px;
 	margin: 0;
 	padding: 0;
 }
 
+h1, h2, h3{
+	@extend .font-fancy;
+}
+
+h4, h5 {
+	@extend .font-regular;
+}
+
+h1 {
+	font-size: 34px;
+}
+h2 {
+	font-size: 34px;
+	line-height: 70px;
+}
+h3 {
+	font-size: 30px;
+	line-height: 60px;
+}
+h4 {
+
+	font-size: 22px;
+}
+h5 {
+	font-size: 18px;
+}
+
 p {
 	margin: 0 0 1em;
+	line-height: 1.5em;
 
 	/* HYPHENATE ALL THE THINGS! */
 	-webkit-hyphens: auto;

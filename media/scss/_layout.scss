@@ -40,7 +40,52 @@ body {
 	}
 }
 .splash-content-section {
-	background: url("../images/darkwood.png") repeat-y 50%;
+	@extend .color-splash-content-section;
+	width: 960px;
+	padding: 10px 0;
+	margin: 0 auto;
+}
+.splash-footer {
+	@extend .color-text-dark;
+	text-align: center;
+	margin-top: 20px;
+	h3 {
+		@include column(6, true);
+		text-align: center;
+	}
+	.credit.latorri {
+		@include column(3);
+		text-align: left;
+
+		li {
+			float: left;
+			margin-right: 5px;
+		}
+	}
+	.credit.lorenzo {
+		@include column(3, true);
+		text-align: right;
+
+		li {
+			float: right;
+			margin-left: 5px;
+		}
+	}
+	ul {
+		margin: 5px 0;
+	}
+	li {
+		a {
+			display: block;
+			overflow: hidden;
+			height: 22px;
+			width: 26px;
+		}
+		img:hover {
+			position: relative;
+			top: -22px;
+		}
+	}
 }
 
 .board {
