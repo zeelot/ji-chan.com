@@ -6,6 +6,43 @@ body {
 	@include container;
 }
 
+.splash-header,
+.splash-content,
+.splash-footer {
+	@include container;
+}
+
+.splash-header {
+	height: 160px;
+
+	.logo {
+		@include column(4);
+		height: 160px;
+		position: relative;
+
+		a {
+			position: absolute;
+			top: 50%;
+			margin-top: -63px;
+		}
+	}
+	.play {
+		@include column(2, true);
+
+		a {
+			@extend .class-button-primary;
+			display: block;
+			height: 70px;
+			width: 135px; // Make room for drop shadow
+			line-height: 70px;
+			margin-top: 45px;
+		}
+	}
+}
+.splash-content-section {
+	background: url("../images/darkwood.png") repeat-y 50%;
+}
+
 .board {
 	@include user-select(none);
 	position: relative;
@@ -13,7 +50,7 @@ body {
 }
 
 .drop-zones {
-	@include column(16, true);
+	@include column(6, true);
 	@extend .l-grid;
 
 	text-align: center;
@@ -46,7 +83,7 @@ body {
 }
 
 .spawn-zones {
-	@include column(16, true);
+	@include column(6, true);
 	@extend .l-grid;
 
 	text-align: center;

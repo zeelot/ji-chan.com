@@ -1,0 +1,34 @@
+// Browns
+$color-spring-wood: #EADFD5;
+$color-tan: #D5B696;
+$color-aths-special: #DBCCB7;
+$color-tobacco: #705946;
+$color-dark-rimu: #724332;
+$color-bracken: #5C4532;
+$color-paco: #4F3F32;
+
+$color-text-light: $color-tan;
+$color-text-buttons: $color-aths-special;
+$color-text-dark: $color-dark-rimu;
+
+.color-button-primary {
+	@include background-image(linear-gradient($color-tobacco, $color-bracken));
+	@include border-radius(5px);
+	@include single-box-shadow($color-spring-wood, 1px, 1px, 1px);
+	@include text-shadow(rgba(darken($color-bracken, 5%), 0.75) 1px 1px 0, rgba($color-spring-wood, 0.75) 1px 1px 3px, darken($color-bracken, 5%) -1px -1px 0);
+
+	background-repeat: repeat-x;
+	background-color: $color-bracken;
+	color: $color-text-buttons;
+
+	border-color: darken($color-bracken, 5%);
+	border-width: 1px;
+	border-style: solid;
+
+	&:hover {
+		// @TODO: implement this
+	}
+	&:active {
+		// @TODO: implement this
+	}
+}
