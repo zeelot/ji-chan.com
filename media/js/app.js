@@ -180,13 +180,11 @@ window.App = {
 
 			this.start();
 		},
-		'validDrop': function (event, DropZoneModel) {
-			var TileID = event.originalEvent.dataTransfer.getData('TileID');
-
+		'validDrop': function (DropZoneModel, ui) {
 			this.progress += 1.0/this.LevelDropZonesCollection.length;
 
 			this.LevelSpawnZonesCollection.any(function (SpawnZone) {
-				if (SpawnZone.get('tile').cid === TileID) {
+				if (SpawnZone.get('tile') === ui.draggable.data('TileModel')) {
 					SpawnZone.set({
 						'enabled': false
 					});
@@ -202,7 +200,7 @@ window.App = {
 				alert('You win! Hold tight while we make some more levels.');
 			}
 		},
-		'invalidDrop': function (event) {
+		'invalidDrop': function (DropZoneModel, ui) {
 			// @TODO: Some score keeping
 		},
 		/**
@@ -309,13 +307,8 @@ window.App = {
 		'className': 'drop-zone',
 		'BoardDropZoneModel': null,
 		'BoardView': null,
-		'events': {
-			'dragover': 'draggedOver',
-			'dragenter': 'dragEntered',
-			'dragleave': 'dragLeft',
-			'drop': 'dropped'
-		},
 		'initialize': function () {
+			_.bindAll(this);
 			this.BoardDropZoneModel = this.options.model;
 			this.BoardView = this.options.BoardView;
 
@@ -324,8 +317,12 @@ window.App = {
 			this.BoardDropZoneModel.bind('change:tile', this.render, this);
 
 			this.render();
+			this.$el.droppable({
+				'drop': this.dropped
+			});
 		},
 		'render': function () {
+			//console.log('rendering');
 			if (this.BoardDropZoneModel.get('character') === null) {
 				this.$el.html('&nbsp;');
 			} else {
@@ -344,28 +341,15 @@ window.App = {
 				this.$el.html(characterView.$el);
 			}
 		},
-		'draggedOver': function (event) {
-			// We need to preventDefault() to allow dropping items on this Zone
-			if (this.BoardDropZoneModel.get('tile') === null) {
-				// Only allow dropping when there is no tile in here
-				event.preventDefault();
-			}
-		},
-		'dragEntered': function (event) {
-			// We need to preventDefault() to allow dropping items on this Zone
-			if (this.BoardDropZoneModel.get('tile') === null) {
-				// Only allow dropping when there is no tile in here
-				event.preventDefault();
-			}
-		},
-		'dragLeft': function (event) {},
-		'dropped': function (event) {
-			var cid = event.originalEvent.dataTransfer.getData('CharacterID');
+		'dropped': function (event, ui) {
+			var TileModel = ui.draggable.data('TileModel');
 
-			if (this.BoardDropZoneModel.get('character').cid === cid) {
-				this.BoardDropZoneModel.trigger('dropped dropped:valid', event, this.BoardDropZoneModel);
+			if (this.BoardDropZoneModel.get('character') === TileModel.get('character')) {
+				this.BoardDropZoneModel.trigger('dropped dropped:valid', this.BoardDropZoneModel, ui);
+				TileModel.trigger('dropped dropped:valid', this.BoardDropZoneModel, ui);
 			} else {
-				this.BoardDropZoneModel.trigger('dropped dropped:invalid', event, this.BoardDropZoneModel);
+				this.BoardDropZoneModel.trigger('dropped dropped:invalid', this.BoardDropZoneModel, ui);
+				TileModel.trigger('dropped dropped:invalid', this.BoardDropZoneModel, ui);
 			}
 		}
 	});
@@ -408,10 +392,10 @@ window.App = {
 		},
 		'changedEnabled': function () {
 			if (this.BoardSpawnZoneModel.get('enabled')) {
-				this.$el.removeClass('disabled');
+				this.$el.show();
 				this.TileView.enable();
 			} else {
-				this.$el.addClass('disabled');
+				this.$el.hide();
 				this.TileView.disable();
 			}
 		},
@@ -432,18 +416,23 @@ window.App = {
 		'template': null,
 		'tagName': 'div',
 		'className': 'tile',
-		'attributes': {
-			'draggable': true
-		},
 		'TileModel': null,
-		'events': {
-			'dragstart': 'dragStart'
-		},
+		'originalPosition': null,
 		'initialize': function () {
 			_.bindAll(this);
 
 			this.TileModel = this.options.TileModel;
 			this.render();
+			this.$el.draggable({
+				'containment': $('.board'),
+				'zIndex': 1000,
+				'snap': '.drop-zone',
+				'snapMode': 'inner',
+				'revert': 'invalid',
+				'start': this.dragStart
+			});
+			this.$el.data('TileModel', this.TileModel);
+			this.TileModel.bind('dropped:invalid', this.invalidDrop);
 		},
 		'render': function () {
 			var characterView = new Lib.CharacterView({
@@ -453,15 +442,22 @@ window.App = {
 
 			this.$el.html(characterView.$el);
 		},
-		'dragStart': function (event) {
-			event.originalEvent.dataTransfer.setData('CharacterID', this.TileModel.get('character').cid);
-			event.originalEvent.dataTransfer.setData('TileID', this.TileModel.cid);
+		'dragStart': function (event, ui) {
+			// Store the original position to be able to reset
+			this.originalPosition = ui.originalPosition;
+		},
+		'invalidDrop': function (DropZoneModel, ui) {
+			// Send the tile back to its Spawn Zone
+			this.$el.animate({
+				'top': this.originalPosition.top+'px',
+				'left': this.originalPosition.left+'px'
+			});
 		},
 		'enable': function () {
-			this.$el.attr('draggable', true);
+			this.$el.draggable('enable');
 		},
 		'disable': function () {
-			this.$el.attr('draggable', false);
+			this.$el.draggable('disable');
 		}
 	});
 
