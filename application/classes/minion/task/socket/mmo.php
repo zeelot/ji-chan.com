@@ -4,6 +4,8 @@ class Minion_Task_Socket_MMO extends Minion_Task {
 
 	protected $_server;
 
+	protected $_placed = 0;
+
 	protected $_board = array(
 		array(
 			'character' => 0,
@@ -80,13 +82,35 @@ class Minion_Task_Socket_MMO extends Minion_Task {
 			case 'validTileDrop':
 				$this->_place_tile($data['tileID']);
 				$this->_broadcast_valid_tile_drop($client_id, $data['tileID']);
+				if ($this->_placed === 5)
+				{
+					$this->_reset_board();
+				}
 				break;
 		}
 	}
 
 	protected function _place_tile($tile_id)
 	{
+		$this->_placed++;
 		$this->_board[$tile_id]['placed'] = TRUE;
+	}
+
+	protected function _reset_board()
+	{
+		foreach ($this->_board as $id => $array)
+		{
+			$this->_board[$id] = array(
+				'character' => $array['character'],
+				'dropzone'  => $array['dropzone'],
+				'placed'    => FALSE,
+			);
+		}
+
+		shuffle($this->_board);
+		$this->_placed = 0;
+
+		$this->_broadcast_board_info();
 	}
 
 	protected function _send_board_info($client_id)
@@ -95,6 +119,14 @@ class Minion_Task_Socket_MMO extends Minion_Task {
 			'type'  => 'boardInfo',
 			'board' => $this->_board,
 		)));
+	}
+
+	protected function _broadcast_board_info()
+	{
+		foreach ($this->_clients as $client)
+		{
+			$this->_send_board_info($client);
+		}
 	}
 
 	protected function _broadcast_tile_drag_start($client_id, $tile_id)

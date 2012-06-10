@@ -178,6 +178,14 @@
 				i,
 				self = this;
 
+			// Empty collections first
+			this.LevelSpawnZonesCollection.each(function (model) {
+				model.set({'tile': null});
+			});
+			this.LevelDropZonesCollection.each(function (model) {
+				model.set({'character': null, 'tile': null});
+			});
+
 			for (i = 0; i < length; i++) {
 				Character = this.LevelCharactersCollection.at(board[i]['character']);
 				Tile = new Lib.BoardTileModel({

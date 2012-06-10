@@ -49,6 +49,14 @@ body {
 		}
 	}
 }
+.game-header {
+	height: 130px;
+
+	.logo {
+		@include container;
+		margin-top: 10px;
+	}
+}
 .splash-content-section {
 	@extend .color-splash-content-section;
 	width: 960px;
@@ -109,14 +117,14 @@ body {
 	margin-top: 5px;
 }
 
-.drop-zones {
+.board-drop-zones {
 	@include column(6, true);
 	@extend .l-grid;
 
 	text-align: center;
 
 	position: absolute;
-	top: 0;
+	top: 15px;
 }
 
 .drop-zone {
@@ -149,7 +157,7 @@ body {
 	text-align: center;
 
 	position: absolute;
-	bottom: 5px;
+	bottom: 15px;
 }
 
 .spawn-zone {
