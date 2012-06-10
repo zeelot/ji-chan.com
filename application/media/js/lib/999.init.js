@@ -8,6 +8,9 @@
 
 		// Initialize our Router and start the app
 		App.appRouter = new Lib.AppRouter;
+		App.appUser = new Lib.UserModel({
+			score: 0
+		});
 		// Start the backbone app if the router has been created
 		Backbone.history && Backbone.history.start({pushState: true, root: '/'});
 	});

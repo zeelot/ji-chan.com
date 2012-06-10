@@ -50,11 +50,20 @@ body {
 	}
 }
 .game-header {
+	@include container;
 	height: 130px;
 
 	.logo {
-		@include container;
+		@include column(3);
 		margin-top: 10px;
+	}
+	.player-score {
+		@include column(3, true);
+		@extend .color-text-dark;
+		line-height: 130px;
+		margin-top: 10px;
+		font-size: 2em;
+		text-align: center;
 	}
 }
 .splash-content-section {

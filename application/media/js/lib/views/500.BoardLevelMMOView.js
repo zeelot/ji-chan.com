@@ -120,6 +120,8 @@
 				'type': 'validTileDrop',
 				'tileID': ui.draggable.data('TileModel').get('id')
 			}));
+			App.appUser.set({'score': App.appUser.get('score') + 1});
+			console.log(App.appUser);
 		},
 		'invalidTileDrop': function (tileID) {
 			this.LevelSpawnZonesCollection.any(function (SpawnZone) {
