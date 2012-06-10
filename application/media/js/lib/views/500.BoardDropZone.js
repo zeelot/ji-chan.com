@@ -47,6 +47,7 @@
 			} else {
 				this.BoardDropZoneModel.trigger('dropped dropped:invalid', this.BoardDropZoneModel, ui);
 				TileModel.trigger('dropped dropped:invalid', this.BoardDropZoneModel, ui);
+				TileModel.trigger('localInvalidDrop');
 			}
 		}
 	});

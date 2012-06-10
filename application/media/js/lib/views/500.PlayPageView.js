@@ -6,7 +6,7 @@
 		'initialize': function () {
 			// Calls the parent initialize function
 			Lib.PageView.prototype.initialize.call(this);
-			this.LevelView = new Lib.BoardLevel1View;
+			this.LevelView = new Lib.BoardLevelMMOView();
 		}
 	});
 }(jQuery, window.App, window.App.Lib, window.App.Templates));
