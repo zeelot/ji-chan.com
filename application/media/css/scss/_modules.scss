@@ -4,3 +4,39 @@
  * and your carousels and your dialogs and your widgets and so on."
  * - http://smacss.com/book/type-module
  */
+
+.l-grid {
+	list-style-type: none;
+}
+.l-grid-item {
+	display: inline-block;
+
+	/* IE7 hack to mimic inline-block on block elements */
+	*display: inline;
+	*zoom: 1;
+}
+
+.class-button-general {
+	font-size: 11px;
+
+	text-decoration: none;
+	text-align: center;
+	cursor: pointer;
+
+	&:hover {
+		text-decoration: none;
+	}
+
+	&.disabled, &[disabled="disabled"] {
+		@include opacity(0.65);
+		cursor: default;
+	}
+}
+
+.class-button-primary {
+	@extend .class-button-general;
+	@extend .color-button-primary;
+	@extend .font-fancy;
+
+	font-size: 30px;
+}
