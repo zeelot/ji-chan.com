@@ -30,14 +30,16 @@
 		},
 		'render': function () {
 			if (this.layout) {
-				this.$el.html(this.layout.render(this.renderData, {
+				this.$el.html(this.layout.render(this.renderData(), {
 					'content': this.template
 				}));
 			}
 		},
 		'renderData': function () {
 			// Replace this method to provide data when rendering
-			return {};
+			return {
+				'media_url': Kohana.media_url
+			};
 		}
 	});
 }(jQuery, window.App, window.App.Lib, window.App.Templates));
