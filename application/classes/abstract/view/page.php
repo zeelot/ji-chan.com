@@ -19,6 +19,27 @@ abstract class Abstract_View_Page extends Abstract_View_Layout {
 		);
 	}
 
+	public function js_templates()
+	{
+		$front = strlen('templates/js/');
+		$end = strlen('.mustache');
+
+		$paths = Arr::flatten(Kohana::list_files('templates/js'));
+
+		$templates = array();
+		foreach ($paths as $path => $filepath)
+		{
+			$js_path = substr($path, $front);
+			$js_path = substr($js_path, 0, strlen($js_path) - $end);
+			$templates[] = array(
+				'path'     => $js_path,
+				'template' => file_get_contents($filepath),
+			);
+		}
+
+		return $templates;
+	}
+
 	public function js_export()
 	{
 		return json_encode($this->js_array());
