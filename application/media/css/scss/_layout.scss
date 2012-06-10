@@ -9,7 +9,7 @@ $blueprint-grid-width: ($blueprint-container-size + $blueprint-grid-margin) / $b
 $blueprint-grid-outer-width: $blueprint-grid-width + $blueprint-grid-margin;
 
 body {
-	background: url("../images/wood-pattern.png");
+	background: url("../../images/wood-pattern.png");
 }
 
 .board-container {
@@ -120,7 +120,7 @@ body {
 
 	margin: 0px 5px;
 
-	background: url("../images/game/drop-zone-deep.png") no-repeat;
+	background: url("../../images/game/drop-zone-deep.png") no-repeat;
 
 	> .character {
 		position: relative;
@@ -129,7 +129,7 @@ body {
 	}
 }
 .drop-zone.has-tile {
-	background: url("../images/game/tile-down-1.png") no-repeat;
+	background: url("../../images/game/tile-down-1.png") no-repeat;
 	color: #FFF;
 	> .character {
 		top: 20px;
@@ -156,7 +156,7 @@ body {
 	width: 64px;
 	text-align: center;
 
-	background: url("../images/game/tile-up-1.png");
+	background: url("../../images/game/tile-up-1.png");
 
 	position: relative;
 

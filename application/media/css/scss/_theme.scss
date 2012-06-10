@@ -81,5 +81,5 @@ $color-text-dark: $color-paco;
 	@extend .color-text-light;
 	@include border-radius(5px);
 	@include single-box-shadow($color-spring-wood, 0, 1px, 1px);
-	background: url("../images/darkwood.png") repeat-y 50%;
+	background: url("../../images/darkwood.png") repeat-y 50%;
 }
