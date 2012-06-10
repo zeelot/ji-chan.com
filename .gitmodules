@@ -1,0 +1,33 @@
+[submodule "system"]
+	path = system
+	url = git://github.com/Zeelot/kohana-core
+[submodule "modules/userguide"]
+	path = modules/userguide
+	url = git://github.com/Zeelot/kohana-userguide
+[submodule "modules/yform"]
+	path = modules/yform
+	url = git://github.com/Zeelot/kohana-yform.git
+[submodule "modules/kostache"]
+	path = modules/kostache
+	url = git://github.com/Zeelot/kohana-KOstache
+[submodule "modules/media"]
+	path = modules/media
+	url = git://github.com/Zeelot/kohana-media.git
+[submodule "modules/minion"]
+	path = modules/minion
+	url = git://github.com/Zeelot/kohana-minion.git
+[submodule "modules/minion-tasks-repo"]
+	path = modules/minion-tasks-repo
+	url = git://github.com/Zeelot/minion-tasks-repo.git
+[submodule "modules/git"]
+	path = modules/git
+	url = git://github.com/Zeelot/kohana-git.git
+[submodule "modules/assets"]
+	path = modules/assets
+	url = git://github.com/Zeelot/kohana-assets.git
+[submodule "vagrant/cookbooks"]
+	path = vagrant/cookbooks
+	url = git://github.com/Zeelot/vagrant-cookbooks.git
+[submodule "modules/minion-tasks-media"]
+	path = modules/minion-tasks-media
+	url = git://github.com/Zeelot/minion-tasks-media.git

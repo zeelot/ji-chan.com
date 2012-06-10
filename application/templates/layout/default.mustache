@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="generator" content="{{app_version}}">
+	<title>{{title}}</title>
+
+	<script type="text/javascript">
+	// <![CDATA[
+		// Global Kohana object
+		Kohana = {{#js_export}}{{{js_export}}}{{/js_export}}{{^js_export}}{}{{/js_export}};
+	// ]]>
+	</script>
+
+[[assets_head]]
+
+</head>
+<body id="{{view_name}}">
+	<div id="page">
+		<div id="header">
+			<h1>{{title}}</h1>
+		</div>
+		<div id="content">
+		{{>content}}
+		</div>
+		<div id="footer"></div>
+	</div>
+	[[assets_body]]
+</body>
+</html>
