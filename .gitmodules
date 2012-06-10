@@ -31,3 +31,6 @@
 [submodule "modules/minion-tasks-media"]
 	path = modules/minion-tasks-media
 	url = git://github.com/Zeelot/minion-tasks-media.git
+[submodule "application/vendor/php-websockets"]
+	path = application/vendor/php-websockets
+	url = git://github.com/ghedipunk/PHP-Websockets.git
