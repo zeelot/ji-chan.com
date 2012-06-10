@@ -100,8 +100,13 @@ body {
 
 .board {
 	@include user-select(none);
+	@include border-radius(5px);
+
 	position: relative;
 	height: 500px;
+
+	border: 1px solid $color-tobacco;
+	margin-top: 5px;
 }
 
 .drop-zones {
@@ -144,11 +149,13 @@ body {
 	text-align: center;
 
 	position: absolute;
-	bottom: 0;
+	bottom: 5px;
 }
 
 .spawn-zone {
 	margin: 0px 5px;
+	height: 64px;
+	width: 64px;
 }
 
 .tile {
