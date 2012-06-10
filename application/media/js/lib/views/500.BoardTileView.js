@@ -45,10 +45,10 @@
 			}
 		},
 		'remoteDrag': function (tilePosition) {
-			this.$el.stop(true, true).animate({
+			this.$el.stop(true).animate({
 				'top': tilePosition.top+'px',
 				'left': tilePosition.left+'px'
-			});
+			}, 50);
 		},
 		'remoteInvalidDrop': function () {
 			this.revertPosition();

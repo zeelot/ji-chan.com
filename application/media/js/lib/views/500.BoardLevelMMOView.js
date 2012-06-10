@@ -88,7 +88,7 @@
 
 				this.socket_send = _.throttle(function (message) {
 					self.socket.send(message);
-				}, 100);
+				}, 50);
 			} catch (exception) {
 				console.log(exception);
 			}
