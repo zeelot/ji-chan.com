@@ -6,11 +6,10 @@
 		'initialize': function () {
 			// Calls the parent initialize function
 			Lib.PageView.prototype.initialize.call(this);
-			this.LevelView = new Lib.BoardLevelMMOView();
+			this.LevelView = new Lib.BoardLevel1View();
 			App.appUser.bind('change', this.updateScore, this);
 		},
 		updateScore: function () {
-			console.log('updating');
 			this.$('.player-score').text(App.appUser.get('score'));
 		}
 	});
